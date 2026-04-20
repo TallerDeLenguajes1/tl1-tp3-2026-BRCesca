@@ -9,7 +9,7 @@ void mostrarPersonas(char *vector[],int tamanio){
         printf("\n\n%d)%s",(i+1),*(vector+i));
     }
 }
-int buscarNombre(char *vector[],char *pal){// con esta funcion consigo el indice de la palabra la cual imprimire en el main
+int buscarNombrePorPalabra(char *vector[],char *pal){// con esta funcion consigo el indice de la palabra la cual imprimire en el main
     for (int i = 0; i < 5; i++)
     {
         if(strstr(*(vector+i),pal)){
@@ -20,26 +20,54 @@ int buscarNombre(char *vector[],char *pal){// con esta funcion consigo el indice
 }
 
 
+void buscarNombrePorId(char *vector[],int id){// tomo como id del primer nombre 1. id=1 entra a la componente v[0]
+    if(id>=1 && id<=5){
+        printf("El nombre con el id=%d es: %s",id , *(vector + (id -1)));
+    }else{
+        printf("No se encontro el valor buscado");
+    }
+}
+
+
+
 int main(){
     char *V[5];
     char *buff;
-    int id_del_nombre;
+    int opcion, id_buscar, indice;
     buff=(char *)malloc(100*sizeof(char));
     for(int i=0;i<5;i++){
-        printf("\n\ningrese el %d nombre:", i+1);
+        printf("\ningrese el %d nombre:", i+1);
         gets(buff);
         *(V + i)=(char *)malloc((strlen(buff)+1)*sizeof(char));
         strcpy(*(V +i), buff);
     }
-    mostrarPersonas(V,5);
-    printf("\nIngrese la palabra clave para buscar:");
-    gets(buff);
-    id_del_nombre= buscarNombre(V,buff);
-    if(id_del_nombre!=-1){
-        printf("\nPalabra clave ingresada: %s\nNombre obtenido:%s",buff, *(V+id_del_nombre));
+    printf("\n\n-----MENU DE BUSQUEDA");
+    printf("\n1)Busqueda por ID");
+    printf("\n2)Busqueda por palabra clave");
+    printf("\nElija una opcion: ");
+    scanf("%d",&opcion);
+    getchar();//limpio el buffer
+    if(opcion==1){
+        printf("\nIngrese el id: ");
+        scanf("%d", &id_buscar);
+        buscarNombrePorId(V,id_buscar);
+    }else if(opcion==2){
+        printf("\nIngrese la palabra clave: ");
+        gets(buff);
+        indice=buscarNombrePorPalabra(V,buff);
+        if(indice!=-1){
+            printf("\n Nombre encontrado: %s",*(V+indice));
+        }else{
+            printf("\n -1");//no se encontraron coincidencias
+        }
     }else{
-        printf("No se encontraron nombres relacionados con la palabra clave ingresada");
+        printf("\nOpcion no valida");
+
     }
+
+
+
+
 
 
     free(buff);
