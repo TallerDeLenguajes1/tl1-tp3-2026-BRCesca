@@ -25,6 +25,32 @@ Producto *productos; //El tamaño de este arreglo depende de la variable
 // “CantidadProductosAPedir”
 }Cliente;
 
+float calcularCostoTotal(Producto *p){
+    return ((p->cantidad)*(p->precioUnitario));
+}
+void mostrarClientes(Cliente *persona, int cantPersonas){// usare un procedimiento para mostrar lo que me piden en el enunciado 3)v)
+    printf("\n---------LISTADO DE VENTA---------");
+    for (int i = 0; i < cantPersonas; i++)
+    {
+        float totalFinalCliente=0;
+        Cliente *actual=(persona + i);
+        printf("=====================================================================");
+        printf("\n\nCLIENTE: %s  .  ID: %d", actual->nombreCliente, actual->clienteId);
+        for(int j=0;j<actual->cantidadProductosAPedir;j++){
+            Producto *pActual=(actual->productos + j);
+            float subTotal= calcularCostoTotal(pActual);//empleo la funcion que defini para calcular costos de un producto en especifico
+            totalFinalCliente+=subTotal;
+            printf("\n PRODUCTO: %s ||| CANTIDAD: %d ||| P.UNITARIO: %.2f ||| SUBTOTAL: %.2f ",pActual->tipoProducto, pActual->cantidad, pActual->precioUnitario, subTotal);
+        }
+        printf("\n------------------------------------------------------------------------");
+        printf("\nTOTAL A PAGAR POR EL CLIENTE:   %.2f",totalFinalCliente);
+        printf("\n------------------------------------------------------------------------");
+
+    }
+    
+}
+
+
 
 int main(){
     char *TiposProductos[]={"Galletas","Snack","Cigarrillos","Caramelos","Bebidas"};
@@ -54,6 +80,17 @@ int main(){
 
 
     }
+    mostrarClientes(listaClientes, cantidadClientes);// procedimiento que llama a la funcion calcularCostoTotal y me permite mostrar por pantalla toda la info solicitada
+    
+    //LIBERO MEMORIA
+    for(int k=0;k<cantidadClientes;k++){
+        free((listaClientes + k)->nombreCliente);
+        free((listaClientes + k)->productos);
+    }
+    free(listaClientes);
+    free(buff);
+
+
 
     return 0;
 }
